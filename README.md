@@ -39,13 +39,21 @@ The `wallet` command will set up your wallet in the `~/.bittensor` directory.
 To streamline the process, when running the container, specify the required environment variables.
 
 ```bash
-docker run -it --env=AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> --env=AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> --env=AWS_WALLET_URL=<AWS_WALLET_URL> <image-name>
+docker run -it \
+    --env=AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
+    --env=AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
+    --env=AWS_WALLET_URL=<AWS_WALLET_URL> \
+    <image-name>
 ```
 
 There is no `CMD` specified in the `Dockerfile` because this image is designed to be a base. But to set up the wallet manually you can enter the container with bash (substitute your values for placeholders):
 
 ```bash
-docker run -it --env=AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> --env=AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> --env=AWS_WALLET_URL=<AWS_WALLET_URL> eddienakamoto/base:v1.0.0-cpu /bin/bash
+docker run -it \
+    --env=AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
+    --env=AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
+    --env=AWS_WALLET_URL=<AWS_WALLET_URL> \
+    eddienakamoto/base:v1.0.0-cpu /bin/bash
 ```
 
 Then run the wallet command:
