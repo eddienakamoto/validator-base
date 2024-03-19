@@ -10,6 +10,7 @@ The image comes with common packages used with Bittensor validators preinstalled
 - Unzip
 - Jq
 - Tini
+- Nano
 - Pm2
 
 The image includes an `ENTRYPOINT` that prepends `tini --` to the start command, setting `tini` to `PID 1`. This enables any command that is executed when starting the container to be backed by a fully featured, light weight, init system. `tini` will manage all the signal handling, process management, and reaping of zombie processes.

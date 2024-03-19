@@ -22,9 +22,9 @@ ARG TARGETARCH
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install python3.10, git, npm, curl,
-# unzip, jq, tini, and pm2, then clean to reduce size.
+# unzip, jq, tini, nano, and pm2, then clean to reduce size.
 RUN apt update && \
-    apt install -y python3.10 python3-pip git npm curl unzip jq tini && \
+    apt install -y python3.10 python3-pip git npm curl unzip jq tini nano && \
     npm install -g pm2 && \
     apt clean
 
