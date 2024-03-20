@@ -17,6 +17,14 @@ The image includes an `ENTRYPOINT` that prepends `tini --` to the start command,
 
 The Bittensor package was intentionally excluded since each subnet validator includes it in their `requirements.txt` file. Preinstalling Bittensor can lead to dependency conflicts.
 
+## Environment Variables
+For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_IMAGE_NAME_VALI` should be set. 
+
+| Name                   | Description                            | 
+|------------------------|----------------------------------------|
+| DOCKER_USERNAME        | Docker username that hosts the image   |
+| DOCKER_IMAGE_NAME_VALI | The Docker repository name             |
+
 ## Building a Image
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguements. They can also be built for multiple platforms utilizing the `buildx` docker extension.
 
@@ -32,16 +40,6 @@ docker buildx build \
     -o type=docker .
 ```
 
-To build and push to docker, execute the following command.
-
-```bash
-docker buildx build \
-    --platform=linux/amd64,linux/arm64 \
-    --build-arg BASE_TYPE="cpu" \
-    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-cpu \
-    --push .
-```
-
 ### GPU Image
 
 To build the GPU image locally execute the following command.
@@ -54,14 +52,13 @@ docker buildx build \
     -o type=docker .
 ```
 
-To build and push to docker, execute the following command.
+## Pushing a Image
+Images can be built and pushed using the `push.sh` script. The script requires 3 arguments for the base type (`cpu` or `gpu`), the type of update (`major`, `minor`, or `patch`), and the platform (`linux/arm64`, `linux/amd64`, or both). The current version of the image is retrieved from docker hub. Depending on the type of update (`major`, `minor`, or `patch`), it will increment the correct digit by 1. This enables a streamlined versioning system.
+
+To push a update the following command is executed.
 
 ```bash
-docker buildx build \
-    --platform=linux/amd64,linux/arm64 \
-    --build-arg BASE_TYPE="gpu" \
-    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-gpu \
-    --push .
+./push.sh -u [major|minor|patch] -p [linux/arm64,linux/amd64] -t [cpu|gpu]
 ```
 
 ## Wallet Support
