@@ -22,6 +22,8 @@ Base images can be built for either `cpu` or `gpu` by specifying the type with b
 
 ### CPU Image
 
+To build the CPU image locally execute the following command.
+
 ```bash
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
@@ -30,7 +32,19 @@ docker buildx build \
     -o type=docker .
 ```
 
+To build and push to docker, execute the following command.
+
+```bash
+docker buildx build \
+    --platform=linux/amd64,linux/arm64 \
+    --build-arg BASE_TYPE="cpu" \
+    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-cpu \
+    --push .
+```
+
 ### GPU Image
+
+To build the GPU image locally execute the following command.
 
 ```bash
 docker buildx build \
@@ -38,6 +52,16 @@ docker buildx build \
     --build-arg BASE_TYPE="gpu" \
     -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-gpu \
     -o type=docker .
+```
+
+To build and push to docker, execute the following command.
+
+```bash
+docker buildx build \
+    --platform=linux/amd64,linux/arm64 \
+    --build-arg BASE_TYPE="gpu" \
+    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-gpu \
+    --push .
 ```
 
 ## Wallet Support
