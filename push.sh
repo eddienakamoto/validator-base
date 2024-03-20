@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if DOCKER_USERNAME and DOCKER_IMAGE_NAME_VALI are set
+if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_IMAGE_NAME_VALI" ]; then
+    echo "DOCKER_USERNAME and DOCKER_IMAGE_NAME_VALI must be set."
+    exit 1
+fi
+
 # Function to print usage
 print_usage() {
     echo "Usage: $0 -u [major|minor|patch] -p platforms -t [cpu|gpu]"
