@@ -20,21 +20,23 @@ The Bittensor package was intentionally excluded since each subnet validator inc
 ## Building a Image
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguements. They can also be built for multiple platforms utilizing the `buildx` docker extension.
 
-```bash
-docker buildx build \
-    --platform=<platforms> \
-    --build-arg BASE_TYPE="<cpu or gpu>" \
-    -t <username>/<name>:<tag> \
-    -o type=docker .
-```
-
-For example, to build a `cpu` based image that supports both `amd64` and `arm64`, you'd run the following:
+### CPU Image
 
 ```bash
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
     --build-arg BASE_TYPE="cpu" \
-    -t eddienakamoto/base:v1.0.0-cpu \
+    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-cpu \
+    -o type=docker .
+```
+
+### GPU Image
+
+```bash
+docker buildx build \
+    --platform=linux/amd64,linux/arm64 \
+    --build-arg BASE_TYPE="gpu" \
+    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-gpu \
     -o type=docker .
 ```
 
