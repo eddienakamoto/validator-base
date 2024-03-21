@@ -18,7 +18,7 @@ The image includes an `ENTRYPOINT` that prepends `tini --` to the start command,
 The Bittensor package was intentionally excluded since each subnet validator includes it in their `requirements.txt` file. Preinstalling Bittensor can lead to dependency conflicts.
 
 ## Environment Variables
-For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` should be set. 
+For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` should be set on the host machine i.e. the machine that is building the images. 
 
 | Name                   | Description                            | Required |
 |------------------------|----------------------------------------|----------|
