@@ -20,10 +20,10 @@ The Bittensor package was intentionally excluded since each subnet validator inc
 ## Environment Variables
 For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` should be set. 
 
-| Name                   | Description                            | 
-|------------------------|----------------------------------------|
-| DOCKER_USERNAME        | Docker username that hosts the image   |
-| DOCKER_VALIDATOR_BASE  | The Docker repository name             |
+| Name                   | Description                            | Required |
+|------------------------|----------------------------------------|----------|
+| DOCKER_USERNAME        | Docker username that hosts the image   | ✅       |
+| DOCKER_VALIDATOR_BASE  | The Docker repository name             | ✅       |
 
 ## Building Locally
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguments. They can also be built for multiple platforms utilizing the `buildx` docker extension. Unfortunately, you cannot build for multiple platforms inline (at least on Mac). Each platform build needs to be executed as its own command.
