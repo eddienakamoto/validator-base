@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if DOCKER_USERNAME and DOCKER_IMAGE_NAME_VALI are set
-if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_IMAGE_NAME_VALI" ]; then
+if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_VALIDATOR_BASE" ]; then
     echo "DOCKER_USERNAME and DOCKER_IMAGE_NAME_VALI must be set."
     exit 1
 fi
@@ -64,7 +64,7 @@ if [ "$platforms" != "linux/amd64" ] && [ "$platforms" != "linux/arm64" ] && [ "
 fi
 
 # Get the current version on docker hub.
-current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI/tags/" | \
+current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE/tags/" | \
     jq -r '.results[].name | sub("-cpu|-gpu"; "")' | \
     grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
     sort -V | \
@@ -100,6 +100,6 @@ new_version="$major.$minor.$patch"
 docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
-    -t "$DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:$new_version-$base_type" \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type" \
     --push .
 
