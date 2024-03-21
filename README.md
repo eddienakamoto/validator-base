@@ -36,7 +36,7 @@ To build the CPU image locally execute the following command.
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
     --build-arg BASE_TYPE="cpu" \
-    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-cpu \
+    -t $DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:<tag>-cpu \
     -o type=docker .
 ```
 
@@ -48,7 +48,7 @@ To build the GPU image locally execute the following command.
 docker buildx build \
     --platform=linux/amd64,linux/arm64 \
     --build-arg BASE_TYPE="gpu" \
-    -t $DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI:<tag>-gpu \
+    -t $DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:<tag>-gpu \
     -o type=docker .
 ```
 
