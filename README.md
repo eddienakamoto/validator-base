@@ -26,29 +26,47 @@ For building and pushing to work correctly, the environment variables `DOCKER_US
 | DOCKER_VALIDATOR_BASE  | The Docker repository name             |
 
 ## Building Locally
-Base images can be built for either `cpu` or `gpu` by specifying the type with build arguements. They can also be built for multiple platforms utilizing the `buildx` docker extension.
+Base images can be built for either `cpu` or `gpu` by specifying the type with build arguments. They can also be built for multiple platforms utilizing the `buildx` docker extension. Unfortunately, you cannot build for multiple platforms inline (at least on Mac). Each platform build needs to be executed as its own command.
 
 ### CPU Image
+Building the `Validator Base` CPU image locally requires the `cpu` value to be specified for the `BASE_TYPE`.
 
-To build the CPU image locally execute the following command.
-
+#### ARM64
 ```bash
 docker buildx build \
-    --platform=linux/amd64,linux/arm64 \
+    --platform=linux/arm64 \
     --build-arg BASE_TYPE="cpu" \
-    -t $DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:latest-cpu \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu \
+    -o type=docker .
+```
+
+#### AMD64
+```bash
+docker buildx build \
+    --platform=linux/amd64 \
+    --build-arg BASE_TYPE="cpu" \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu \
     -o type=docker .
 ```
 
 ### GPU Image
+Building the `Validator Base` GPU image locally requires the `gpu` value to be specified for the `BASE_TYPE`.
 
-To build the GPU image locally execute the following command.
-
+#### ARM64
 ```bash
 docker buildx build \
-    --platform=linux/amd64,linux/arm64 \
+    --platform=linux/arm64 \
     --build-arg BASE_TYPE="gpu" \
-    -t $DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:latest-gpu \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-gpu \
+    -o type=docker .
+```
+
+#### AMD64
+```bash
+docker buildx build \
+    --platform=linux/amd64 \
+    --build-arg BASE_TYPE="gpu" \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-gpu \
     -o type=docker .
 ```
 
