@@ -109,7 +109,7 @@ docker run -it \
     --env=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
     --env=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     --env=AWS_WALLET_URL=$AWS_WALLET_URL \
-    <image-name>
+    "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu
 ```
 
 There is no `CMD` specified in the `Dockerfile` because this image is designed to be a base. But to set up the wallet manually you can enter the container with bash.
@@ -119,7 +119,7 @@ docker run -it \
     --env=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
     --env=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     --env=AWS_WALLET_URL=$AWS_WALLET_URL \
-    <image-name> /bin/bash
+    "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu /bin/bash
 ```
 
 Then run the wallet command:
