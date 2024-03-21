@@ -18,12 +18,12 @@ The image includes an `ENTRYPOINT` that prepends `tini --` to the start command,
 The Bittensor package was intentionally excluded since each subnet validator includes it in their `requirements.txt` file. Preinstalling Bittensor can lead to dependency conflicts.
 
 ## Environment Variables
-For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_IMAGE_NAME_VALI` should be set. 
+For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` should be set. 
 
 | Name                   | Description                            | 
 |------------------------|----------------------------------------|
 | DOCKER_USERNAME        | Docker username that hosts the image   |
-| DOCKER_IMAGE_NAME_VALI | The Docker repository name             |
+| DOCKER_VALIDATOR_BASE  | The Docker repository name             |
 
 ## Building a Image
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguements. They can also be built for multiple platforms utilizing the `buildx` docker extension.
