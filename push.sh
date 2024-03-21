@@ -65,7 +65,7 @@ fi
 
 # Get the current version on docker hub.
 current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_IMAGE_NAME_VALI/tags/" | \
-    jq -r '.results[].name | sub("-cpu"; "")' | \
+    jq -r '.results[].name | sub("-cpu|-gpu"; "")' | \
     grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
     sort -V | \
     tail -n 1)
