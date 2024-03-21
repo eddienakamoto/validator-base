@@ -25,7 +25,7 @@ For building and pushing to work correctly, the environment variables `DOCKER_US
 | DOCKER_USERNAME        | Docker username that hosts the image   |
 | DOCKER_VALIDATOR_BASE  | The Docker repository name             |
 
-## Building a Image
+## Building Locally
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguements. They can also be built for multiple platforms utilizing the `buildx` docker extension.
 
 ### CPU Image
