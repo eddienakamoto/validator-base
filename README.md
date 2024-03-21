@@ -20,10 +20,18 @@ The Bittensor package was intentionally excluded since each subnet validator inc
 ## Environment Variables
 For building and pushing to work correctly, the environment variables `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` should be set on the host machine i.e. the machine that is building the images. 
 
-| Name                   | Description                            | Required |
-|------------------------|----------------------------------------|----------|
-| DOCKER_USERNAME        | Docker username that hosts the image   | ✅       |
-| DOCKER_VALIDATOR_BASE  | The Docker repository name             | ✅       |
+| Name                   | Description                            | Required on Host |
+|------------------------|----------------------------------------|------------------|
+| DOCKER_USERNAME        | Docker username that hosts the image   | ✅               |
+| DOCKER_VALIDATOR_BASE  | The Docker repository name             | ✅               |
+
+If running the images locally, it is recommended to have `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_WALLET_URL` set on the host machine. This will align the commands in this documentation to work in your environment. Alternatively, these values can be specified directly when running the docker container.
+
+| Name                  | Description                        | Required on Host |
+|-----------------------|------------------------------------|------------------|
+| AWS_ACCESS_KEY_ID     | AWS access key ID                  | ❌               |
+| AWS_SECRET_ACCESS_KEY | AWS secret access key              | ❌               |
+| AWS_WALLET_URL        | AWS S3 URL to download your wallet | ❌               |
 
 ## Building Locally
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguments. They can also be built for multiple platforms utilizing the `buildx` docker extension. Unfortunately, you cannot build for multiple platforms inline (at least on Mac). Each platform build needs to be executed as its own command.
