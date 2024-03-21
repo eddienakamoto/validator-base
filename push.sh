@@ -8,7 +8,7 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 -u [major|minor|patch] -p platforms -t [cpu|gpu]"
+    echo "Usage: $0 -u [major|minor|patch] -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu]"
 }
 
 # Default values
