@@ -63,12 +63,17 @@ if [ "$platforms" != "linux/amd64" ] && [ "$platforms" != "linux/arm64" ] && [ "
     exit 1
 fi
 
-# Get the current version on docker hub.
-current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE/tags/" | \
-    jq -r '.results[].name | sub("-cpu|-gpu"; "")' | \
+# Get the current version on docker hub for the specified base type
+current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE/tags/?name=$base_type" | \
+    jq -r '.results[].name | select(test("'$base_type'$")) | sub("-cpu|-gpu"; "")' | \
     grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
     sort -V | \
     tail -n 1)
+
+# If no version exists for the specified base type, default to 0.0.0
+if [ -z "$current_version" ]; then
+    current_version="0.0.0"
+fi
 
 # Split version into major, minor, and patch components
 IFS='.' read -r major minor patch <<< "$current_version"
