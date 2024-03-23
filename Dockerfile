@@ -1,17 +1,22 @@
 # The base type to build the image for (cpu or gpu).
 ARG BASE_TYPE=cpu 
 
-# Use Ubuntu 22.04 as the base cpu image.
-FROM ubuntu:22.04 AS base-cpu 
+# The ubuntu version to build the image from (default 22.04).
+ARG UBUNTU_VERSION=22.04
+
+# Use Ubuntu as the base cpu image.
+FROM ubuntu:${UBUNTU_VERSION} AS base-cpu 
 ARG BASE_TYPE 
+ARG UBUNTU_VERSION
 
 # Use Nvidia CUDA 11.8.0 as the base gpu image.
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 AS base-gpu 
+FROM nvidia/cuda:11.8.0-devel-ubuntu${UBUNTU_VERSION} AS base-gpu 
 ARG BASE_TYPE
+ARG UBUNTU_VERSION
 
 # Use the appropriate base image (base-cpu or base-gpu).
 FROM base-${BASE_TYPE} AS base
-RUN echo "Building base: $BASE_TYPE..." && sleep 2
+RUN echo "Building base: $BASE_TYPE-ubuntu$UBUNTU_VERSION" && sleep 2
 
 # The target architecture the image is being built as (amd64 or arm64).
 ARG TARGETARCH

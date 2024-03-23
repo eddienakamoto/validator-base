@@ -36,6 +36,8 @@ If running the images locally, it is recommended to have `AWS_ACCESS_KEY_ID`, `A
 ## Building Locally
 Base images can be built for either `cpu` or `gpu` by specifying the type with build arguments. They can also be built for multiple platforms utilizing the `buildx` docker extension. Unfortunately, you cannot build for multiple platforms inline (at least on Mac). Each platform build needs to be executed as its own command.
 
+The version of `Ubuntu` the images are built from defaults to `ubuntu:22.04`. This can be overridden by using `--build-arg UBUNTU_VERSION="<version-number>"`.
+
 ### CPU Image
 Building the `Validator Base` CPU image locally requires the `cpu` value to be specified for the `BASE_TYPE`.
 

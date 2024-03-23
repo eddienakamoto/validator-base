@@ -8,16 +8,17 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 -u [major|minor|patch] -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu]"
+    echo "Usage: $0 -u [major|minor|patch] -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu] [-v ubuntu_version]"
 }
 
 # Default values
 update_type=""
 platforms=""
 base_type=""
+ubuntu_version="22.04"
 
 # Parse command line options
-while getopts ":u:p:t:" opt; do
+while getopts ":u:p:t:v:" opt; do
     case ${opt} in
         u )
             update_type="$OPTARG"
@@ -27,6 +28,9 @@ while getopts ":u:p:t:" opt; do
             ;;
         t )
             base_type="$OPTARG"
+            ;;
+        v )
+            ubuntu_version="$OPTARG"
             ;;
         \? )
             echo "Invalid option: $OPTARG" 1>&2
@@ -105,6 +109,7 @@ new_version="$major.$minor.$patch"
 docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type" \
+    --build-arg UBUNTU_VERSION="$ubuntu_version" \
+    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ubuntu$ubuntu_version" \
     --push .
 
