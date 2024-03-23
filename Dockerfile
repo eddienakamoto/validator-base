@@ -11,17 +11,18 @@ ARG CUDA_VERSION=11.8.0
 FROM ubuntu:${UBUNTU_VERSION} AS base-cpu 
 ARG BASE_TYPE 
 ARG UBUNTU_VERSION
+RUN echo "Base Image: ubuntu:$UBUNTU_VERSION"
 
 # Use Nvidia CUDA as the base gpu image.
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS base-gpu 
 ARG BASE_TYPE
 ARG UBUNTU_VERSION
 ARG CUDA_VERSION
-RUN echo "Cuda Version: $CUDA_VERSION"
+RUN echo "Base Image: nvidia/cuda:$CUDA_VERSION-devel-ubuntu$UBUNTU_VERSION"
 
 # Use the appropriate base image (base-cpu or base-gpu).
 FROM base-${BASE_TYPE} AS base
-RUN echo "Building base: $BASE_TYPE-ubuntu$UBUNTU_VERSION" && sleep 2
+RUN echo "Base Type: $BASE_TYPE"
 
 # The target architecture the image is being built as (amd64 or arm64).
 ARG TARGETARCH
