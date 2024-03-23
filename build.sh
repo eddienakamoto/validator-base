@@ -103,7 +103,7 @@ fi
 
 # Get the current version on docker hub for the specified base type
 current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE/tags/?name=$base_type" | \
-    jq -r '.results[].name | select(test("'$base_type'")) | sub("-cpu|-gpu"; "") | sub("-ubuntu.*"; "")' | \
+    jq -r '.results[].name | select(test("'$base_type'")) | sub("-cpu|-gpu"; "") | sub("-ub.*"; "")' | \
     grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
     sort -V | \
     tail -n 1)
@@ -146,7 +146,7 @@ else
 fi
 
 # Build the Docker image
-docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ubuntu$ubuntu_version"
+docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ub$ubuntu_version"
 # Append CUDA version to tag if base_type is gpu and cuda_version is specified
 if [ "$base_type" = "gpu" ]; then
     docker_tag="${docker_tag}-cuda$cuda_version"
