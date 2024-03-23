@@ -7,21 +7,16 @@ ARG UBUNTU_VERSION=22.04
 # The cuda version to build the gpu image from (default 11.8.0)
 ARG CUDA_VERSION=11.8.0
 
-# The Python version to install (default 3.10).
-ARG PYTHON_VERSION=3.10
-
 # Use Ubuntu as the base cpu image.
 FROM ubuntu:${UBUNTU_VERSION} AS base-cpu 
 ARG BASE_TYPE 
 ARG UBUNTU_VERSION
-ARG PYTHON_VERSION
 
 # Use Nvidia CUDA as the base gpu image.
 FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS base-gpu 
 ARG BASE_TYPE
 ARG UBUNTU_VERSION
 ARG CUDA_VERSION
-ARG PYTHON_VERSION
 RUN echo "Cuda Version: $CUDA_VERSION"
 
 # Use the appropriate base image (base-cpu or base-gpu).
@@ -36,10 +31,10 @@ ARG TARGETARCH
 # installation.
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update package list and install specified Python version, git, npm, curl,
+# Update package list and installs Python3.10, git, npm, curl,
 # unzip, jq, tini, nano, and pm2, then clean to reduce size.
 RUN apt-get update && \
-    apt-get install -y python${PYTHON_VERSION} python3-pip git npm curl unzip jq tini nano && \
+    apt-get install -y python3.10 python3-pip git npm curl unzip jq tini nano && \
     npm install -g pm2 && \
     apt-get clean
 
