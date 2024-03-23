@@ -36,9 +36,9 @@ python_version="3.10"
 local_build=false
 
 # Parse command line options
-while getopts ":u:p:t:v:c:y:-:" opt; do
+while getopts ":v:p:t:u:c:y:-:" opt; do
     case ${opt} in
-        u )
+        v )
             update_type="$OPTARG"
             ;;
         p )
@@ -47,7 +47,7 @@ while getopts ":u:p:t:v:c:y:-:" opt; do
         t )
             base_type="$OPTARG"
             ;;
-        v )
+        u )
             ubuntu_version="$OPTARG"
             ;;
         c )
