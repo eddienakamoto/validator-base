@@ -31,10 +31,11 @@ platforms=""
 base_type=""
 ubuntu_version="22.04"
 cuda_version="11.8.0"
+python_version="3.10"
 local_build=false
 
 # Parse command line options
-while getopts ":u:p:t:v:c:-:" opt; do
+while getopts ":u:p:t:v:c:y:-:" opt; do
     case ${opt} in
         u )
             update_type="$OPTARG"
@@ -50,6 +51,9 @@ while getopts ":u:p:t:v:c:-:" opt; do
             ;;
         c )
             cuda_version="$OPTARG"
+            ;;
+        y )
+            python_version="$OPTARG"
             ;;
         - )
             case "${OPTARG}" in
@@ -146,8 +150,9 @@ else
 fi
 
 # Build the Docker image
-docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ub$ubuntu_version"
-# Append CUDA version to tag if base_type is gpu and cuda_version is specified
+docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ub$ubuntu_version-py$python_version"
+
+# If base_type is gpu, append CUDA version
 if [ "$base_type" = "gpu" ]; then
     docker_tag="${docker_tag}-cuda$cuda_version"
 fi
@@ -156,6 +161,7 @@ docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
     --build-arg UBUNTU_VERSION="$ubuntu_version" \
-    $(if [ "$base_type" = "gpu" ] && [ -n "$cuda_version" ]; then echo "--build-arg CUDA_VERSION=$cuda_version"; fi) \
+    --build-arg PYTHON_VERSION="$python_version" \
+    $(if [ "$base_type" = "gpu" ]; then echo "--build-arg CUDA_VERSION=$cuda_version"; fi) \
     -t "$docker_tag" \
     $([[ "$local_build" == true ]] && echo "--load" || echo "--push") .
