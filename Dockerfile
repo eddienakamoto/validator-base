@@ -34,7 +34,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Update package list and installs Python3.10, git, npm, curl,
 # unzip, jq, tini, nano, and pm2, then clean to reduce size.
 RUN apt-get update && \
-    apt-get install -y python3.10 python3-pip git npm curl unzip jq tini nano && \
+    apt-get install -y git npm curl unzip jq tini nano && \
     npm install -g pm2 && \
     apt-get clean
 
@@ -64,6 +64,30 @@ RUN unzip awscliv2.zip -d opt && ./opt/aws/install && rm awscliv2.zip
 # default to "us-east-1" and "json". 
 COPY wallet.sh /usr/local/bin/wallet 
 RUN chmod +x /usr/local/bin/wallet
+
+# Install software-properties-common before adding the PPA
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# The python version to install (default 3.10)
+ARG PYTHON_VERSION=3.10
+
+# Add Deadsnakes PPA and install Python. Update alternatives to use 
+# the specified Python version as the default python.
+RUN add-apt-repository --yes ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y \
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-dev \
+    python${PYTHON_VERSION}-distutils \
+    python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VERSION} 1 && \
+    update-alternatives --set python3 /usr/bin/python${PYTHON_VERSION}
 
 # Set tini as the entry point. This starts tini with PID 1
 # and allows it to act as the init system.

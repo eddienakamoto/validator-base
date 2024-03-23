@@ -15,6 +15,7 @@ Options:
   -u <update_type>      Define update type (options: major, minor, patch); If not specified, the current version is used without increment
   -v <ubuntu_version>   Set Ubuntu version (default: 22.04)
   -c <cuda_version>     Specify CUDA version (default: 11.8.0); Only required if -t gpu is used
+  -y <python_version>   Specify Python version (default: 3.10)
   --local               Perform a local build without pushing to a registry
 
 Examples:
@@ -31,10 +32,11 @@ platforms=""
 base_type=""
 ubuntu_version="22.04"
 cuda_version="11.8.0"
+python_version="3.10"
 local_build=false
 
 # Parse command line options
-while getopts ":u:p:t:v:c:-:" opt; do
+while getopts ":u:p:t:v:c:y:-:" opt; do
     case ${opt} in
         u )
             update_type="$OPTARG"
@@ -50,6 +52,9 @@ while getopts ":u:p:t:v:c:-:" opt; do
             ;;
         c )
             cuda_version="$OPTARG"
+            ;;
+        y )
+            python_version="$OPTARG"
             ;;
         - )
             case "${OPTARG}" in
@@ -146,7 +151,7 @@ else
 fi
 
 # Build the Docker image
-docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ub$ubuntu_version"
+docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ub$ubuntu_version-py$python_version"
 
 # If base_type is gpu, append CUDA version
 if [ "$base_type" = "gpu" ]; then
@@ -157,6 +162,7 @@ docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
     --build-arg UBUNTU_VERSION="$ubuntu_version" \
+    --build-arg PYTHON_VERSION="$python_version" \
     $(if [ "$base_type" = "gpu" ]; then echo "--build-arg CUDA_VERSION=$cuda_version"; fi) \
     -t "$docker_tag" \
     $([[ "$local_build" == true ]] && echo "--load" || echo "--push") .
