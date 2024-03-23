@@ -34,7 +34,7 @@ If running the images locally, it is recommended to have `AWS_ACCESS_KEY_ID`, `A
 | AWS_WALLET_URL        | AWS S3 URL to download your wallet | ❌               |
 
 ## Building
-The image can be built using the `build.sh` script. As stated above, the `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` environment variables must be set to function properly. The script accepts a range of arguments.
+The image can be built using the `build.sh` script. As stated above, the `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` environment variables must be set to function properly. The script accepts a range of arguments. _Note: building locally with `--load` does not support multiplatform builds. The build script must be executed once per platform._
 
 | Argument       | Flag     | Description                                                                                         | Required |
 |----------------|----------|-----------------------------------------------------------------------------------------------------|----------|
