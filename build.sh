@@ -36,12 +36,12 @@ python_version="3.10"
 local_build=false
 
 # Parse command line options
-while getopts ":v:p:t:u:c:y:-:" opt; do
+while getopts ":v:a:t:u:c:p:-:" opt; do
     case ${opt} in
         v )
             update_type="$OPTARG"
             ;;
-        p )
+        a )
             platforms="$OPTARG"
             ;;
         t )
@@ -53,7 +53,7 @@ while getopts ":v:p:t:u:c:y:-:" opt; do
         c )
             cuda_version="$OPTARG"
             ;;
-        y )
+        p )
             python_version="$OPTARG"
             ;;
         - )
