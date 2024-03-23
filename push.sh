@@ -61,7 +61,10 @@ if [ "$base_type" != "cpu" ] && [ "$base_type" != "gpu" ]; then
 fi
 
 # Check if platforms is valid
-if [ "$platforms" != "linux/amd64" ] && [ "$platforms" != "linux/arm64" ] && [ "$platforms" != "linux/amd64,linux/arm64" ]; then
+if [ "$platforms" != "linux/amd64" ] && \
+   [ "$platforms" != "linux/arm64" ] && \
+   [ "$platforms" != "linux/amd64,linux/arm64" ] && \
+   [ "$platforms" != "linux/arm64,linux/amd64" ]; then
     echo "Invalid platforms: $platforms. Must be either linux/amd64, linux/arm64, or linux/amd64,linux/arm64."
     print_usage
     exit 1
