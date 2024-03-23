@@ -23,10 +23,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install python3.10, git, npm, curl,
 # unzip, jq, tini, nano, and pm2, then clean to reduce size.
-RUN apt update && \
-    apt install -y python3.10 python3-pip git npm curl unzip jq tini nano && \
+RUN apt-get update && \
+    apt-get install -y python3.10 python3-pip git npm curl unzip jq tini nano && \
     npm install -g pm2 && \
-    apt clean
+    apt-get clean
 
 # Download the appropriate aws cli installation files based on 
 # this images build architecture.
