@@ -4,15 +4,20 @@ ARG BASE_TYPE=cpu
 # The ubuntu version to build the image from (default 22.04).
 ARG UBUNTU_VERSION=22.04
 
+# The cuda version to build the gpu image from (default 11.8.0)
+ARG CUDA_VERSION=11.8.0
+
 # Use Ubuntu as the base cpu image.
 FROM ubuntu:${UBUNTU_VERSION} AS base-cpu 
 ARG BASE_TYPE 
 ARG UBUNTU_VERSION
 
-# Use Nvidia CUDA 11.8.0 as the base gpu image.
-FROM nvidia/cuda:11.8.0-devel-ubuntu${UBUNTU_VERSION} AS base-gpu 
+# Use Nvidia CUDA as the base gpu image.
+FROM nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION} AS base-gpu 
 ARG BASE_TYPE
 ARG UBUNTU_VERSION
+ARG CUDA_VERSION
+RUN echo "Cuda Version: $CUDA_VERSION"
 
 # Use the appropriate base image (base-cpu or base-gpu).
 FROM base-${BASE_TYPE} AS base

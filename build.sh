@@ -8,7 +8,7 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu] [-u [major|minor|patch]] [-v ubuntu_version] [--local]"
+    echo "Usage: $0 -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu] [-u [major|minor|patch]] [-v ubuntu_version] [-c cuda_version] [--local]"
 }
 
 # Default values
@@ -16,10 +16,11 @@ update_type=""
 platforms=""
 base_type=""
 ubuntu_version="22.04"
+cuda_version="11.8.0"
 local_build=false
 
 # Parse command line options
-while getopts ":u:p:t:v:-:" opt; do
+while getopts ":u:p:t:v:c:-:" opt; do
     case ${opt} in
         u )
             update_type="$OPTARG"
@@ -32,6 +33,9 @@ while getopts ":u:p:t:v:-:" opt; do
             ;;
         v )
             ubuntu_version="$OPTARG"
+            ;;
+        c )
+            cuda_version="$OPTARG"
             ;;
         - )
             case "${OPTARG}" in
@@ -128,9 +132,16 @@ else
 fi
 
 # Build the Docker image
+docker_tag="$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ubuntu$ubuntu_version"
+# Append CUDA version to tag if base_type is gpu and cuda_version is specified
+if [ "$base_type" = "gpu" ]; then
+    docker_tag="${docker_tag}-cuda$cuda_version"
+fi
+
 docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
     --build-arg UBUNTU_VERSION="$ubuntu_version" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ubuntu$ubuntu_version" \
+    $(if [ "$base_type" = "gpu" ] && [ -n "$cuda_version" ]; then echo "--build-arg CUDA_VERSION=$cuda_version"; fi) \
+    -t "$docker_tag" \
     $([[ "$local_build" == true ]] && echo "--load" || echo "--push") .
