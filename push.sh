@@ -69,7 +69,7 @@ fi
 
 # Get the current version on docker hub for the specified base type
 current_version=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE/tags/?name=$base_type" | \
-    jq -r '.results[].name | select(test("'$base_type'$")) | sub("-cpu|-gpu"; "")' | \
+    jq -r '.results[].name | select(test("'$base_type'")) | sub("-cpu|-gpu"; "") | sub("-ubuntu.*"; "")' | \
     grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | \
     sort -V | \
     tail -n 1)
@@ -85,16 +85,16 @@ IFS='.' read -r major minor patch <<< "$current_version"
 # Determine version increment based on update type
 case $update_type in
     "major")
-        ((major++))
+        major=$((major + 1))
         minor=0
         patch=0
         ;;
     "minor")
-        ((minor++))
+        minor=$((minor + 1))
         patch=0
         ;;
     "patch")
-        ((patch++))
+        patch=$((patch + 1))
         ;;
     * )
         echo "Invalid update type: $update_type. Usage: $0 [major|minor|patch]"
