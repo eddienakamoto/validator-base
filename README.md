@@ -33,60 +33,29 @@ If running the images locally, it is recommended to have `AWS_ACCESS_KEY_ID`, `A
 | AWS_SECRET_ACCESS_KEY | AWS secret access key              | ❌               |
 | AWS_WALLET_URL        | AWS S3 URL to download your wallet | ❌               |
 
-## Building Locally
-Base images can be built for either `cpu` or `gpu` by specifying the type with build arguments. They can also be built for multiple platforms utilizing the `buildx` docker extension. Unfortunately, you cannot build for multiple platforms inline (at least on Mac). Each platform build needs to be executed as its own command.
+## Building
+The image can be built using the `build.sh` script. As stated above, the `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` environment variables must be set to function properly. The script accepts a range of arguments.
 
-The version of `Ubuntu` the images are built from defaults to `ubuntu:22.04`. This can be overridden by using `--build-arg UBUNTU_VERSION="<version-number>"`.
+| Argument       | Flag     | Description                                                                                         | Required |
+|----------------|----------|-----------------------------------------------------------------------------------------------------|----------|
+| Update type    | `-v`     | The type of update (major, minor, or patch), ommitting this flag will build for the current version | ❌       |
+| Platform       | `-a`     | The image platform (linux/arm64, linux/amd64, or both)                                              | ✅       |
+| Base type      | `-t`     | The base image type (cpu or gpu)                                                                    | ✅       |
+| Ubuntu version | `-u`     | The version of Ubuntu (default: 22.04)                                                              | ❌       |
+| CUDA version   | `-c`     | The version of CUDA, only required if the -t is gpu (default: 11.8.0)                               | ❌       |
+| Python version | `-p`     | The version of Python (default: 3.10)                                                               | ❌       |
+| Build locally  | `--load` | Builds the image to the local docker registry, omitting this flag will build and push to docker hub | ❌       |
 
-### CPU Image
-Building the `Validator Base` CPU image locally requires the `cpu` value to be specified for the `BASE_TYPE`.
-
-#### ARM64
+### Usage
 ```bash
-docker buildx build \
-    --platform=linux/arm64 \
-    --build-arg BASE_TYPE="cpu" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu \
-    -o type=docker .
-```
-
-#### AMD64
-```bash
-docker buildx build \
-    --platform=linux/amd64 \
-    --build-arg BASE_TYPE="cpu" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-cpu \
-    -o type=docker .
-```
-
-### GPU Image
-Building the `Validator Base` GPU image locally requires the `gpu` value to be specified for the `BASE_TYPE`.
-
-#### ARM64
-```bash
-docker buildx build \
-    --platform=linux/arm64 \
-    --build-arg BASE_TYPE="gpu" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-gpu \
-    -o type=docker .
-```
-
-#### AMD64
-```bash
-docker buildx build \
-    --platform=linux/amd64 \
-    --build-arg BASE_TYPE="gpu" \
-    -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE":latest-gpu \
-    -o type=docker .
-```
-
-## Pushing a Image
-Images can be built and pushed using the `push.sh` script. The script requires 3 arguments for the base type (`cpu` or `gpu`), the type of update (`major`, `minor`, or `patch`), and the platform (`linux/arm64`, `linux/amd64`, or both). The current version of the image is retrieved from docker hub. Depending on the type of update (`major`, `minor`, or `patch`), it will increment the correct digit by 1. This enables a streamlined versioning system.
-
-To push a update the following command is executed.
-
-```bash
-./push.sh -u [major|minor|patch] -p [linux/arm64,linux/amd64] -t [cpu|gpu]
+./build.sh \
+    -a [linux/arm64|linux/amd64|linux/arm64,linux/amd64]
+    -t [cpu|gpu]
+    [-v [major|minor|path]]
+    [-u [ubuntu_version]]
+    [-c [cuda_version]]
+    [-p [python_version]]
+    [--load]
 ```
 
 ## Wallet Support
