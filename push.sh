@@ -8,7 +8,7 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu] [-u [major|minor|patch]] [-v ubuntu_version]"
+    echo "Usage: $0 -p platforms [linux/arm64,linux/amd64] -t [cpu|gpu] [-u [major|minor|patch]] [-v ubuntu_version] [--local]"
 }
 
 # Default values
@@ -16,9 +16,10 @@ update_type=""
 platforms=""
 base_type=""
 ubuntu_version="22.04"
+local_build=false
 
 # Parse command line options
-while getopts ":u:p:t:v:" opt; do
+while getopts ":u:p:t:v:-:" opt; do
     case ${opt} in
         u )
             update_type="$OPTARG"
@@ -31,6 +32,18 @@ while getopts ":u:p:t:v:" opt; do
             ;;
         v )
             ubuntu_version="$OPTARG"
+            ;;
+        - )
+            case "${OPTARG}" in
+                local )
+                    local_build=true
+                    ;;
+                * )
+                    echo "Invalid option: --$OPTARG" 1>&2
+                    print_usage
+                    exit 1
+                    ;;
+            esac
             ;;
         \? )
             echo "Invalid option: $OPTARG" 1>&2
@@ -46,7 +59,7 @@ while getopts ":u:p:t:v:" opt; do
 done
 shift $((OPTIND -1))
 
-# Check if update_type, platforms, and base_type are provided
+# Check if platforms and base_type are provided
 if [ -z "$platforms" ] || [ -z "$base_type" ]; then
     echo "Missing required arguments"
     print_usage
@@ -114,10 +127,10 @@ else
     new_version="$major.$minor.$patch"
 fi
 
+# Build the Docker image
 docker buildx build \
     --platform="$platforms" \
     --build-arg BASE_TYPE="$base_type" \
     --build-arg UBUNTU_VERSION="$ubuntu_version" \
     -t "$DOCKER_USERNAME/$DOCKER_VALIDATOR_BASE:$new_version-$base_type-ubuntu$ubuntu_version" \
-    --push .
-
+    $([[ "$local_build" == true ]] && echo "--load" || echo "--push") .
