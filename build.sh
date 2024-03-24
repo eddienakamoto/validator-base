@@ -38,29 +38,15 @@ local_build=false
 # Parse command line options
 while getopts ":v:a:t:u:c:p:-:" opt; do
     case ${opt} in
-        v )
-            update_type="$OPTARG"
-            ;;
-        a )
-            platforms="$OPTARG"
-            ;;
-        t )
-            base_type="$OPTARG"
-            ;;
-        u )
-            ubuntu_version="$OPTARG"
-            ;;
-        c )
-            cuda_version="$OPTARG"
-            ;;
-        p )
-            python_version="$OPTARG"
-            ;;
+        v ) update_type="$OPTARG" ;;
+        a ) platforms="$OPTARG" ;;
+        t ) base_type="$OPTARG" ;;
+        u ) ubuntu_version="$OPTARG" ;;
+        c ) cuda_version="$OPTARG" ;;
+        p ) python_version="$OPTARG" ;;
         - )
             case "${OPTARG}" in
-                local )
-                    local_build=true
-                    ;;
+                local ) local_build=true ;;
                 * )
                     echo "Invalid option: --$OPTARG" 1>&2
                     print_usage
