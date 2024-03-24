@@ -36,15 +36,15 @@ If running the images locally, it is recommended to have `AWS_ACCESS_KEY_ID`, `A
 ## Building
 The image can be built using the `build.sh` script. As stated above, the `DOCKER_USERNAME` and `DOCKER_VALIDATOR_BASE` environment variables must be set to function properly. The script accepts a range of arguments. _Note: building locally with `--local` does not support multiplatform builds. The build script must be executed once per platform._
 
-| Argument       | Flag      | Description                                                                                         | Required |
-|----------------|-----------|-----------------------------------------------------------------------------------------------------|----------|
-| Update type    | `-v`      | The type of update (major, minor, or patch), omitting this flag will build for the current version | ❌       |
-| Platform       | `-a`      | The image platform (linux/arm64, linux/amd64, or both)                                              | ✅       |
-| Base type      | `-t`      | The base image type (cpu or gpu)                                                                    | ✅       |
-| Ubuntu version | `-u`      | The version of Ubuntu (default: 22.04)                                                              | ❌       |
-| CUDA version   | `-c`      | The version of CUDA, only required if the -t is gpu (default: 11.8.0)                               | ❌       |
-| Python version | `-p`      | The version of Python (default: 3.10)                                                               | ❌       |
-| Build locally  | `--local` | Builds the image to the local docker registry, omitting this flag will build and push to docker hub | ❌       |
+| Argument       | Flag      | Description                                        | Required | Notes                           |
+|----------------|-----------|----------------------------------------------------|----------|---------------------------------|
+| Update type    | `-v`      | Type of update (major, minor, or patch)            | ❌       | Current version used if omitted |
+| Platform       | `-a`      | Image platform (linux/arm64, linux/amd64, or both) | ✅       |                                 | 
+| Base type      | `-t`      | Base image type (cpu or gpu)                       | ✅       |                                 | 
+| Ubuntu version | `-u`      | Ubuntu version                                     | ❌       | Defaults to 22.04               |
+| CUDA version   | `-c`      | CUDA version, only specify if `-t` is `gpu`        | ❌       | Defaults to 11.8.0              |
+| Python version | `-p`      | Python version                                     | ❌       | Defaults to 3.10                |
+| Build locally  | `--local` | Builds the image to the local docker registry      | ❌       | Builds to Docker Hub if omitted |
 
 ### Usage
 ```bash
