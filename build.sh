@@ -8,7 +8,7 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 [OPTIONS]
+    echo "Usage: $0 -p <platforms> -t <type> [OPTIONS]
 Options:
   -p <platforms>        Specify platforms; multiple can be comma-separated (options: linux/arm64, linux/amd64, or both)
   -t <type>             Set base type (options: cpu, gpu)

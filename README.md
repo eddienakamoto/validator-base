@@ -49,12 +49,12 @@ The image can be built using the `build.sh` script. As stated above, the `DOCKER
 ### Usage
 ```bash
 ./build.sh \
-    -a [linux/arm64|linux/amd64|linux/arm64,linux/amd64]
-    -t [cpu|gpu]
-    [-v [major|minor|path]]
-    [-u [ubuntu_version]]
-    [-c [cuda_version]]
-    [-p [python_version]]
+    -a <linux/arm64|linux/amd64|linux/arm64,linux/amd64>
+    -t <cpu|gpu>
+    [-v <major|minor|path>]
+    [-u <ubuntu_version>]
+    [-c <cuda_version>]
+    [-p <python_version>]
     [--local]
 ```
 
