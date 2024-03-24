@@ -38,7 +38,7 @@ The image can be built using the `build.sh` script. As stated above, the `DOCKER
 
 | Argument       | Flag      | Description                                                                                         | Required |
 |----------------|-----------|-----------------------------------------------------------------------------------------------------|----------|
-| Update type    | `-v`      | The type of update (major, minor, or patch), ommitting this flag will build for the current version | ❌       |
+| Update type    | `-v`      | The type of update (major, minor, or patch), omitting this flag will build for the current version | ❌       |
 | Platform       | `-a`      | The image platform (linux/arm64, linux/amd64, or both)                                              | ✅       |
 | Base type      | `-t`      | The base image type (cpu or gpu)                                                                    | ✅       |
 | Ubuntu version | `-u`      | The version of Ubuntu (default: 22.04)                                                              | ❌       |
