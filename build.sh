@@ -8,22 +8,22 @@ fi
 
 # Function to print usage
 print_usage() {
-    echo "Usage: $0 -p <platforms> -t <type> [OPTIONS]
+    echo "Usage: $0 -a <platforms> -t <type> [OPTIONS]
 Options:
-  -p <platforms>        Specify platforms; multiple can be comma-separated (options: linux/arm64, linux/amd64, or both)
+  -a <platforms>        Specify platforms; multiple can be comma-separated (options: linux/arm64, linux/amd64, or both)
   -t <type>             Set base type (options: cpu, gpu)
-  -u <update_type>      Define update type (options: major, minor, patch); If not specified, the current version is used without increment
-  -v <ubuntu_version>   Set Ubuntu version (default: 22.04)
+  -v <update_type>      Define update type (options: major, minor, patch); If not specified, the current version is used without increment
+  -u <ubuntu_version>   Set Ubuntu version (default: 22.04)
   -c <cuda_version>     Specify CUDA version (default: 11.8.0); Only required if -t gpu is used
-  -y <python_version>   Specify Python version (default: 3.10)
+  -p <python_version>   Specify Python version (default: 3.10)
   --local               Perform a local build without pushing to a registry
 
 Examples:
-  $0 -p linux/amd64 -t cpu -u minor -v 20.04             # Increment minor version
-  $0 -p linux/amd64,linux/arm64 -t gpu -c 11.2.0 --local # Build with the current version for GPU, without incrementing
+  $0 -a linux/amd64 -t cpu -u minor -u 20.04             # Increment minor version
+  $0 -a linux/amd64,linux/arm64 -t gpu -c 11.2.0 --local # Build with the current version for GPU, without incrementing
 
 Note: Ensure DOCKER_USERNAME and DOCKER_VALIDATOR_BASE environment variables are set before running. 
-      Not specifying '-u' builds with the current version without incrementing."
+      Not specifying '-v' builds with the current version without incrementing."
 }
 
 # Default values
